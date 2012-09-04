@@ -272,6 +272,7 @@ class c2g_listVHosts extends ContentElement
 <div class="formbody">
 <input type="hidden" name="FORM_SUBMIT" value="c2g_copyvhost" />
 <input type="hidden" name="MAX_FILE_SIZE" value="200000000" />
+<input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}" />
 <div class="tl_error">'.$error.'</div>
   <div class="label"><label>'.$GLOBALS['TL_LANG']['tl_content']['c2g_vhost_sourcedir'].'</label> </div>
   /vhosts/'.$this->Input->get("dir").'<br />
