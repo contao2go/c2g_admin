@@ -10,6 +10,7 @@ $GLOBALS['TL_CTE']['c2gAdmin'] = array
 		'c2g_listBackups'     => 'c2g_listBackups',
 		'c2g_listVHosts'      => 'c2g_listVHosts',
 	);
-$GLOBALS['TL_JAVASCRIPT'][] = 'contao/contao.js';
 	
-?>
+if (TL_MODE=='FE')
+	$GLOBALS['TL_JAVASCRIPT'][] = 'contao/contao.js';
+	
