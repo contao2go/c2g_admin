@@ -301,7 +301,7 @@ class c2g_listBackups extends ContentElement
 				
 				$objZip->addString($this->c2g_functions->createMYSQLDump($arrConfigReturn['localconfig']['dbDatabase']),$fileName.'.sql');
 				$objZip->addString(implode("\r\n",$descFile),"description.php");
-				$objZip->addString(implode("\r\n",$arrDir),"directories.dat");
+				//$objZip->addString(implode("\r\n",$arrDir),"directories.dat");
 				$objZip->close();
 				
 				$arrOutput[] = sprintf('<a href="%s" title="%s">%s</a>',
@@ -424,9 +424,17 @@ class c2g_listBackups extends ContentElement
 															$arrConfigReturn['localconfig']['websitePath']);
 							}
 							
+                        
 							$objFile->write($strData);
-							
-							$objFile->close();
+
+                            $objFile->close();                        
+                        
+                            // let the directorystructure create, but remove .empty file
+                            if (basename($file)=='.empty')
+                            {
+                                $objFile->delete();
+                            }
+
 						}
 						
 						$arrOutput[] = $GLOBALS['TL_LANG']['tl_content']['c2g_restorebackup_filesystemrestored'];
@@ -445,8 +453,10 @@ class c2g_listBackups extends ContentElement
 						$c2gZipFile->getFile($file);
 						$objFile = new File('vhosts/'.$file);
 						
+						
 						$objFile->write($c2gZipFile->unzip());
-							
+						
+                       
 						$objFile->close();
 							
 							
@@ -462,11 +472,14 @@ class c2g_listBackups extends ContentElement
 						
 					$objDescFile = new File($GLOBALS["package"]["RootDir"].'/description.php');
 					$objDescFile->delete();
+                    
+                    $objDirFile = new File($GLOBALS["package"]["RootDir"].'/directories.dat');
+                    $objDirFile->delete();
 						
 					$objSQLFile = new File($GLOBALS["package"]["RootDir"].'/'.$c2gFile->filename.'.sql');
 					$objSQLFile->delete();
 						
-					
+                        
 				}
 			}
 							

@@ -206,7 +206,7 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 					
 					foreach ($row as $rowKey=>$rowValue)
 					{
-						$strValue = "'".mysql_escape_string($rowValue)."'";
+						$strValue = "'".mysql_real_escape_string($rowValue)."'";
 					
 						if (!trim($rowValue))
 						{
