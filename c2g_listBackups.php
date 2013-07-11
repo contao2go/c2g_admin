@@ -434,6 +434,13 @@ class c2g_listBackups extends ContentElement
                             {
                                 $objFile->delete();
                             }
+							
+							
+
+							if ($file==$GLOBALS["package"]["Name"].'/system/config/pathconfig.php')
+                            {
+                            	$objFile->delete();
+                            }
 
 						}
 						
