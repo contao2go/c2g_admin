@@ -80,8 +80,6 @@ class c2g_listVHosts extends ContentElement
                         $BELink='typolight';
                     }
 
-                    $arrOutputLinks=array();
-
                     $arrOutput['header']=sprintf($GLOBALS['TL_LANG']['tl_content']['c2g_vhost_directory'], $hosts);
                     $arrOutput['buttons'][]=sprintf('<a href="%s" title="Frontend" %s>Frontend</a>', $sourceLink, LINK_NEW_WINDOW);
                     $arrOutput['buttons'][]=sprintf('<a href="%s/%s" title="Backend" %s>Backend</a>', $sourceLink, $BELink, LINK_NEW_WINDOW);
@@ -131,6 +129,12 @@ class c2g_listVHosts extends ContentElement
                         }
 
                         $arrOutput['description'].=$descXML->$myLang->description;
+                    }
+
+                    if ($GLOBALS['IS_NO_CONTAO'])
+                    {
+                        unset($arrOutput['buttons']);
+                        unset($arrOutput['description']);
                     }
 
                     $arrItems[$hosts][]=$arrOutput;
