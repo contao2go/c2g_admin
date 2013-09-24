@@ -36,6 +36,7 @@
 									<?php echo $item['description']; ?>	
 								</div>
 							</div>
+							<?php if (is_array($item['buttons']) && count($item['buttons']) > 0): ?>
 							<div class="buttons">
 							
 								<?php if (is_array($item['buttons'])): ?>
@@ -46,6 +47,7 @@
 								</ul>
 								<?php endif; ?>
 							</div>
+							<?php endif; ?>
 						</li>
 						<li>
 						<div class="clear"></div>

@@ -26,6 +26,7 @@ class c2g_functions extends System
 			else
 			{
 				$arrImportFiles = array();
+				$GLOBALS['IS_NO_CONTAO'] = true;
 			}
 		}
 		
