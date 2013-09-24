@@ -18,10 +18,14 @@ class c2g_functions extends System
 				$arrImportFiles['/system/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
                 define('IS_CONTAO3',false);
 			}
-			else
+			else if (file_exists($path.'/system/config/constants.php'))
 			{
 				$arrImportFiles['/system/config/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
                 define('IS_CONTAO3',true);
+			}
+			else
+			{
+				$arrImportFiles = array();
 			}
 		}
 		
