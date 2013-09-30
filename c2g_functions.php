@@ -13,6 +13,7 @@ class c2g_functions extends System
 			
 		if ($bIncludeConstants)
 		{
+			$GLOBALS['IS_NO_CONTAO'] = false;
 			if (file_exists($path.'/system/constants.php'))
 			{
 				$arrImportFiles['/system/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
