@@ -36,9 +36,7 @@
         "contao": {
             "sources": {
                 "src": "system/modules/c2g_admin"
-            },
-            "runonce":[
-              "src/config/runonce.php"
+            }
             ]
         }
         "master": {
