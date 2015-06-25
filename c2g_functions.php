@@ -13,21 +13,13 @@ class c2g_functions extends System
 			
 		if ($bIncludeConstants)
 		{
-			$GLOBALS['IS_NO_CONTAO'] = false;
 			if (file_exists($path.'/system/constants.php'))
 			{
 				$arrImportFiles['/system/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
-                define('IS_CONTAO3',false);
-			}
-			else if (file_exists($path.'/system/config/constants.php'))
-			{
-				$arrImportFiles['/system/config/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
-                define('IS_CONTAO3',true);
 			}
 			else
 			{
-				$arrImportFiles = array();
-				$GLOBALS['IS_NO_CONTAO'] = true;
+				$arrImportFiles['/system/config/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
 			}
 		}
 		
@@ -154,11 +146,11 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 		if ($GLOBALS['TL_CONFIG']['dbPort'])
 			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
-		$conn = mysql_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],true);
-						
+		$conn = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['TL_CONFIG']['dbDatabase'],$arrConfigReturn['TL_CONFIG']['dbPort']);
+		
 		 
 		if (!$conn) {                                                        
-			die(mysql_error());
+			die(mysqli_error());
 		}
 		
 		$sqlDump =array();
@@ -172,49 +164,52 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 
 
 		
-		mysql_select_db($table,$conn);
+		mysqli_select_db($conn,$table);
 		
-		$tables = mysql_query(sprintf("SHOW TABLES FROM `%s`",$table),$conn);
+		$tables = mysqli_query($conn,sprintf("SHOW TABLES FROM `%s`",$table));
 		
-		while ($cells = mysql_fetch_array($tables)) 
+		while ($cells = mysqli_fetch_array($tables)) 
 		{
 		
 			$table = $cells[0];
 			$sqlDump[] ="DROP TABLE IF EXISTS `$table`;"; 
 			  
-			$res = mysql_query(sprintf("SHOW CREATE TABLE `%s`;",$table),$conn);
+			$res = mysqli_query($conn,sprintf("SHOW CREATE TABLE `%s`;",$table));
 			if ($res) 
 			{
-				$create = mysql_fetch_array($res);
+				$create = mysqli_fetch_array($res);
 				
 				$create[1] .= ";";
 				$sqlDump[]=$create[1];
 				
-				$data = mysql_query(sprintf("SELECT * FROM `%s`",$table),$conn);
-				$sqlFieldConfig = mysql_query(sprintf("SHOW FIELDS FROM `%s`",$table),$conn);
+				$data = mysqli_query($conn,sprintf("SELECT * FROM `%s`",$table));
+				$sqlFieldConfig = mysqli_query($conn,sprintf("SHOW FIELDS FROM `%s`",$table));
 				$arrFieldConfig = array();
 				
-				$num = mysql_num_fields($data);
+				$num = mysqli_num_fields($data);
 				
 				$arrFields = array();
 				for ($i = 0;$i<$num;$i++)
 				{
-					$arrFields[] = "`".mysql_field_name($data,$i)."`";
+					$objProperty = mysqli_fetch_field_direct($data,$i);
+					
+					$arrFields[] = "`".$objProperty->name."`";
 				}
 				
-				while ($row = mysql_fetch_assoc($sqlFieldConfig)) 
+				while ($row = mysqli_fetch_assoc($sqlFieldConfig)) 
 				{
 					$arrFieldConfig[$row['Field']] = $row;
 				}
 				
+				
 				$arrInserts = array();
-				while ($row = mysql_fetch_assoc($data))
+				while ($row = mysqli_fetch_assoc($data))
 				{
 				
 					
 					foreach ($row as $rowKey=>$rowValue)
 					{
-						$strValue = "'".mysql_real_escape_string($rowValue)."'";
+						$strValue = "'".mysqli_real_escape_string($conn,$rowValue)."'";
 					
 						if (!trim($rowValue))
 						{
@@ -243,7 +238,7 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 			}
 		}
 		
-		mysql_close($conn);
+		mysqli_close($conn);
 		
 
 		return implode("\r\n",$sqlDump);
@@ -258,11 +253,11 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 		if ($GLOBALS['TL_CONFIG']['dbPort'])
 			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
-		$connection = mysql_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],true);
-							
+		$connection = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['localconfig']['dbDatabase'],$arrConfigReturn['localconfig']['dbPort']);
+		
 		if ($connection)
 		{		
-			mysql_query(sprintf("DROP DATABASE IF EXISTS `%s`",$arrConfigReturn['localconfig']['dbDatabase']));
+			mysqli_query($connection,sprintf("DROP DATABASE IF EXISTS `%s`",$arrConfigReturn['localconfig']['dbDatabase']));
 						
 			$arrSQL = explode("\r",$text);
 							
@@ -271,16 +266,16 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 									
 				if (trim($query))
 				{
-					$result = mysql_query($query,$connection);
+					$result = mysqli_query($connection,$query);
 					
 					if (!$result)
 					{
-						echo mysql_error().'<br />';
+						echo mysqli_error().'<br />';
 					}
 				}
 			}
 								
-			mysql_close($connection);
+			mysqli_close($connection);
 		}
 		else
 		{

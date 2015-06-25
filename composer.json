@@ -1,0 +1,48 @@
+{
+    "name": "lindesbs/c2g_admin",
+    "description": "C2G AdminTool for the Contao Open Source CMS",
+    "keywords": ["twitter", "contao"],
+    "type": "contao-module",
+    "homepage": "http://www.contao2go.org",
+    "license": [
+        "LGPL-3.0+",
+        "CC-BY-NC-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Stefan Lindecke",
+            "homepage": "http://www.contao2go.org",
+			"email": "hallo@contao2go.org",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/lindesbs/c2g_admin/issues",
+        "irc": "irc://irc.freenode.org/contao.dev",
+        "source": "https://github.com/lindesbs/c2g_admin"
+    },
+    "require": {
+        "php": ">=5.3",
+        "contao/core": ">=2.11,<4",
+        "contao-community-alliance/composer-installer": "*"
+    },
+    "autoload": {
+        "classmap":["src/"],
+    },
+    "replace": {
+        "contao-legacy/c2g_admin": "*"
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "src": "system/modules/c2g_admin"
+            },
+            "runonce":[
+              "src/config/runonce.php"
+            ]
+        }
+        "master": {
+          "master/1.2.1": "1.2.1"
+        }
+    }
+}
