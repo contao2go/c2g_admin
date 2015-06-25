@@ -27,7 +27,7 @@
         "contao-community-alliance/composer-installer": "*"
     },
     "autoload": {
-        "classmap":["src/"],
+        
     },
     "replace": {
         "contao-legacy/c2g_admin": "*"
