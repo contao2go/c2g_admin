@@ -227,6 +227,12 @@ class c2g_listVHosts extends ContentElement
 						$arrOutput[] = sprintf('%s',$GLOBALS['TL_LANG']['tl_content']['c2g_copyvhosts_htaccess']);
 					}
 					
+					if (basename($file)=='pathconfig.php')
+					{
+						$strData = str_replace("vhosts/".$sourceDir,"vhosts/".$destDir,$strData);
+						
+					}
+					
 					$objDestFile->write($strData);
 					
 					$objDestFile->close();

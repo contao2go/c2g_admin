@@ -2,9 +2,9 @@ c2g_admin
 =========
 
 
-Wiki : https://github.com/lindesbs/c2g_admin/wiki
+Wiki : http://www.contao-forge.org/projects/c2gadmin/wiki
 
-Tickets : https://github.com/lindesbs/c2g_admin/issues
+Tickets : http://www.contao-forge.org/projects/c2gadmin/issues
 
 Einrichtung : http://www.contao2go.org/dokumentation/articles/c2gadmin.html
 
