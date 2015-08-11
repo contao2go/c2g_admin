@@ -4,10 +4,7 @@
     "keywords": ["Contao2Go", "contao"],
     "type": "contao-module",
     "homepage": "http://www.contao2go.org",
-    "license": [
-        "LGPL-3.0+",
-        "CC-BY-NC-3.0"
-    ],
+    "license": "LGPL-3.0+",
     "authors": [
         {
             "name": "Stefan Lindecke",
@@ -24,18 +21,18 @@
     "require": {
         "php": ">=5.3",
         "contao/core": ">=2.11,<4",
-        "contao-community-alliance/composer-installer": "*"
+		"contao-community-alliance/composer-plugin": "*",
     },
-    "autoload": {
-        
+    "autoload": {        
+		"classmap":[""]
     },
     "replace": {
-        "contao-legacy/c2g_admin": "*"
+        "contao-legacy/c2g_admin":"self.version"
     },
     "extra": {
         "contao": {
             "sources": {
-                "src": "system/modules/c2g_admin"
+                "": "system/modules/c2g_admin"
             }
             
         }
