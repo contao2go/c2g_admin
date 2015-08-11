@@ -1,7 +1,7 @@
 {
     "name": "lindesbs/c2g_admin",
     "description": "C2G AdminTool for the Contao Open Source CMS",
-    "keywords": ["twitter", "contao"],
+    "keywords": ["Contao2Go", "contao"],
     "type": "contao-module",
     "homepage": "http://www.contao2go.org",
     "license": [
