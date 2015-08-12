@@ -143,15 +143,12 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 	{
 		$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
 		
-		if ($GLOBALS['TL_CONFIG']['dbPort'])
-			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
-						
 		$conn = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['TL_CONFIG']['dbDatabase'],$arrConfigReturn['TL_CONFIG']['dbPort']);
 		
-		 
 		if (!$conn) {                                                        
-			die(mysqli_error());
+			die(mysqli_error($conn));
 		}
+		
 		
 		$sqlDump =array();
 		
@@ -250,8 +247,6 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 	{
 		$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
 		
-		if ($GLOBALS['TL_CONFIG']['dbPort'])
-			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
 		$connection = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['localconfig']['dbDatabase'],$arrConfigReturn['localconfig']['dbPort']);
 		
