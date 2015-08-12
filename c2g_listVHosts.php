@@ -46,13 +46,9 @@ class c2g_listVHosts extends ContentElement
 				$arrConfigReturn =$this->c2g_functions->loadVHostConfig($dirName);
 				
 				$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
-				if ($GLOBALS['TL_CONFIG']['dbPort'])
-					$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
-		
 				$connection = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['TL_CONFIG']['dbDatabase'],$arrConfigReturn['TL_CONFIG']['dbPort']);
 		
-							
 				if ($connection)
 				{		
 					mysqli_query($connection,sprintf("DROP DATABASE IF EXISTS `%s`",$arrConfigReturn['localconfig']['dbDatabase']));
