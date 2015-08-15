@@ -116,7 +116,7 @@ class c2g_listBackups extends ContentElement
 								
 								
 								$arrOutput['header'] = sprintf('%s',htmlspecialchars_decode($desc));
-								$arrOutput['description'] = sprintf('%s : <i>%s</i><br />%s : <i>%s</i>',
+								$arrOutput['description'] = sprintf('%s : <i>%s</i><div class="header">%s :<i>%s</i></div>',
 															$GLOBALS['TL_LANG']['tl_content']['c2g_backupcreate'],
 															$this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $GLOBALS["package"]["Time"]),
 															$GLOBALS['TL_LANG']['tl_content']['c2g_backupsize'],
