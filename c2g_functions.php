@@ -278,7 +278,7 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 					
 					if (!$result)
 					{
-						echo mysqli_error().'<br />';
+						echo mysqli_error($connection).'<br />';
 					}
 				}
 			}
