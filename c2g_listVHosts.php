@@ -46,9 +46,13 @@ class c2g_listVHosts extends ContentElement
 				$arrConfigReturn =$this->c2g_functions->loadVHostConfig($dirName);
 				
 				$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
+				if ($GLOBALS['TL_CONFIG']['dbPort'])
+					$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
+		
 				$connection = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['TL_CONFIG']['dbDatabase'],$arrConfigReturn['TL_CONFIG']['dbPort']);
 		
+							
 				if ($connection)
 				{		
 					mysqli_query($connection,sprintf("DROP DATABASE IF EXISTS `%s`",$arrConfigReturn['localconfig']['dbDatabase']));
@@ -147,6 +151,13 @@ class c2g_listVHosts extends ContentElement
 					}
 					
 					
+					if ($GLOBALS['IS_NO_CONTAO'])
+					{
+						unset($arrOutput['buttons']);
+						unset($arrOutput['description']);
+					}
+					
+					
 					$arrItems[$hosts][] = $arrOutput;
 					
 					
@@ -242,6 +253,14 @@ class c2g_listVHosts extends ContentElement
 			}
 			
 			$arrConfigReturn =$this->c2g_functions->loadVHostConfig(TL_ROOT.'/vhosts/'.$sourceDir);
+      
+			if(IS_CONTAO3)
+			{
+				$objFile=new File("vhosts/".$destDir.'/system/config/pathconfig.php', true);
+				$objFile->write("<?php\n\n// Relative path to the installation\nreturn '/vhosts/".$destDir."';\n");
+				$objFile->close();
+				$arrOutput[]=$GLOBALS['TL_LANG']['tl_content']['c2g_createpathconfig'];
+			}
 			
 			$strNewDump =$this->c2g_functions->createMYSQLDump($arrConfigReturn['localconfig']['dbDatabase'],$newDB);
 			$this->c2g_functions->restoreDump($strNewDump);

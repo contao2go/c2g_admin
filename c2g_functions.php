@@ -11,15 +11,23 @@ class c2g_functions extends System
 		$arrImportFiles['/system/config/localconfig.php']='/\$GLOBALS\[\'TL_CONFIG\'\]\[\'(.*?)\'\]\s*=\s*\'(.*)\';/i';
 			
 			
+		$GLOBALS['IS_NO_CONTAO'] = false;
 		if ($bIncludeConstants)
 		{
 			if (file_exists($path.'/system/constants.php'))
 			{
 				$arrImportFiles['/system/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
+				define('IS_CONTAO3',false);
+			}
+			else if (file_exists($path.'/system/config/constants.php'))
+			{
+				$arrImportFiles['/system/config/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
+				define('IS_CONTAO3',true);
 			}
 			else
 			{
-				$arrImportFiles['/system/config/constants.php'] = '/DEFINE\(\'(.*?)\',\s*\'(.*)\'\);/i';
+				$arrImportFiles = array();
+				$GLOBALS['IS_NO_CONTAO'] = true;
 			}
 		}
 		
@@ -143,12 +151,15 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 	{
 		$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
 		
+		if ($GLOBALS['TL_CONFIG']['dbPort'])
+			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
+						
 		$conn = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['TL_CONFIG']['dbDatabase'],$arrConfigReturn['TL_CONFIG']['dbPort']);
 		
+		 
 		if (!$conn) {                                                        
-			die(mysqli_error($conn));
+			die(mysqli_error());
 		}
-		
 		
 		$sqlDump =array();
 		
@@ -247,6 +258,8 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 	{
 		$sqlHost = $GLOBALS['TL_CONFIG']['dbHost'];
 		
+		if ($GLOBALS['TL_CONFIG']['dbPort'])
+			$sqlHost .=":".$GLOBALS['TL_CONFIG']['dbPort'];
 						
 		$connection = mysqli_connect($sqlHost,$GLOBALS['TL_CONFIG']['dbUser'],$GLOBALS['TL_CONFIG']['dbPass'],$arrConfigReturn['localconfig']['dbDatabase'],$arrConfigReturn['localconfig']['dbPort']);
 		
@@ -265,7 +278,7 @@ $this->getGlobalDef('dbPort',$dbPort),$strLocalConfig);
 					
 					if (!$result)
 					{
-						echo mysqli_error().'<br />';
+						echo mysqli_error($connection).'<br />';
 					}
 				}
 			}

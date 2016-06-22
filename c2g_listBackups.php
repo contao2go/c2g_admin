@@ -116,7 +116,7 @@ class c2g_listBackups extends ContentElement
 								
 								
 								$arrOutput['header'] = sprintf('%s',htmlspecialchars_decode($desc));
-								$arrOutput['description'] = sprintf('%s : <i>%s</i><div class="header">%s :<i>%s</i></div>',
+								$arrOutput['description'] = sprintf('%s : <i>%s</i><br />%s : <i>%s</i>',
 															$GLOBALS['TL_LANG']['tl_content']['c2g_backupcreate'],
 															$this->parseDate($GLOBALS['TL_CONFIG']['datimFormat'], $GLOBALS["package"]["Time"]),
 															$GLOBALS['TL_LANG']['tl_content']['c2g_backupsize'],
@@ -443,6 +443,15 @@ class c2g_listBackups extends ContentElement
 						
 				
 					$arrConfigReturn =$this->c2g_functions->loadVHostConfig(TL_ROOT.'/vhosts/'.$GLOBALS["package"]["Name"]);
+					
+					
+					if(IS_CONTAO3)
+					{
+						$objFile=new File('vhosts/'.$GLOBALS["package"]["Name"].'/system/config/pathconfig.php', true);
+						$objFile->write("<?php\n\n// Relative path to the installation\nreturn '/vhosts/".$GLOBALS["package"]["Name"]."';\n");
+						$objFile->close();
+						$arrOutput[]=$GLOBALS['TL_LANG']['tl_content']['c2g_createpathconfig'];
+					}
 					
 					
 					if ($boolDB)
